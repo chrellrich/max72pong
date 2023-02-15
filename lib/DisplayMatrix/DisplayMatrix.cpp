@@ -1,12 +1,54 @@
 #include "Arduino.h"
 #include "DisplayMatrix.h"
-DisplayMatrix::DisplayMatrix(int pin) {
-	pinMode(pin, OUTPUT);
-	_pin = pin;
+#include <MD_MAX72xx.h>
+#include <SPI.h>
+
+#define HARDWARE_TYPE MD_MAX72XX::FC16_HW
+#define MAX_DEVICES 16
+#define CLK_PIN   13  // or SCK
+#define DATA_PIN  11  // or MOSI
+#define CS_PIN    10  // or SS
+
+
+MD_MAX72XX mx = MD_MAX72XX(HARDWARE_TYPE, DATA_PIN, CLK_PIN, CS_PIN, MAX_DEVICES);
+
+DisplayMatrix::DisplayMatrix() {
+	mx.begin();
+	resetMatrix();
 }
-void DisplayMatrix::myFunction(int blinkRate){
-digitalWrite(_pin, HIGH);
-delay(blinkRate);
-digitalWrite(_pin, LOW);
-delay(blinkRate);
+
+void resetMatrix() {
+  mx.control(MD_MAX72XX::INTENSITY, MAX_INTENSITY/10);
+  mx.control(MD_MAX72XX::UPDATE, MD_MAX72XX::ON);
+  mx.clear();
+}
+
+int convertXToDisplayCoords(int xGame,int yGame) {
+  // 32x32 pixel display is connect as 8x128 
+  int moduleRow = (yGame - yGame % 8) / 8;
+  int xDisplay = -1;
+  if (moduleRow % 2 == 0) {
+    xDisplay = 31 - xGame + 32 * moduleRow;
+  } else {
+    xDisplay = xGame + 32 * moduleRow;
+  }
+  return xDisplay;
+}
+
+int convertYToDisplayCoords(int xGame,int yGame) {
+  // 32x32 pixel display is connect as 8x128 
+  int moduleRow = (yGame - yGame % 8) / 8;
+  int yDisplay = -1;
+  if (moduleRow % 2 == 0) {
+    yDisplay = yGame % 8;
+  } else {
+    yDisplay = 7 - yGame % 8;
+  }
+  return yDisplay; 
+}
+
+void DisplayMatrix::setPixel(int x, int y, bool state){
+	mx.control(MD_MAX72XX::UPDATE, MD_MAX72XX::OFF);
+    mx.setPoint(convertYToDisplayCoords(x,y), convertXToDisplayCoords(x,y), state);
+    mx.control(MD_MAX72XX::UPDATE, MD_MAX72XX::ON);
 }
