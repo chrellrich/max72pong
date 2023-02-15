@@ -5,6 +5,7 @@ class Ball
 {
 public:
 	Ball();
+    Ball(int x, int y);
 
 private:
 	int x;
