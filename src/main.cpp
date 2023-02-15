@@ -1,6 +1,8 @@
 #include <MD_MAX72xx.h>
 #include <SPI.h>
 #include <DisplayMatrix.h>
+#include <Ball.h>
+#include <Paddle.h>
 
 #define HARDWARE_TYPE MD_MAX72XX::FC16_HW
 #define MAX_DEVICES 16
