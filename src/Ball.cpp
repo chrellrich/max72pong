@@ -1,12 +1,15 @@
-#include "Arduino.h"
-#include "Ball.h"
+#include <Ball.h>
 
 Ball::Ball() {
-	x = 0;
-    y = 0;
+	position.set(0,0);
+    
 }
 
 Ball::Ball(int x, int y) {
-    this->x = x;
-    this->y = y;
+    position.set(x,y);   
+}
+
+void Ball::init() {
+    // random direction here? 
+    velocity.set(0,0);
 }

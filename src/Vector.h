@@ -13,6 +13,7 @@ public:
     int length();
     Vector unitVector();
     int dotProduct(Vector b);
+    void set(int x, int y);
     void setX(int x);
     void setY(int y);
     int getX();

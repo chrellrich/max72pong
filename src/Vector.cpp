@@ -35,6 +35,11 @@ int Vector::dotProduct(Vector b) {
 }
 
 // Getter and Setter
+void Vector::set(int x, int y) {
+    this->x = x;
+    this->y = y;
+}
+
 void Vector::setX(int x) {
     this->x = x;
 }
