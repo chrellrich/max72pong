@@ -1,40 +1,82 @@
 #include "Physics.h"
 
-Physics::Physics() {
-
+Physics::Physics()
+{
 }
 
-void Physics::update(Ball* ball, Paddle* lp, Paddle* rp, Display* display) {
+void Physics::update(Ball *ball, Paddle *lp, Paddle *rp, Display *display)
+{
+
     // left paddle
-    lp->setPosition(lp->position.add(lp->velocity));
-    if (lp->position.getY() < 0) {
-        lp->position.setY(0);
-    } else if (lp->position.getY() + lp->length > 32)
+    if (!(lp->velocity.equals(Vector(0, 0))))
     {
-        lp->position.setY(32 - lp->length);
+        Vector oldPos = lp->position;
+        Vector oldPosLast = oldPos.add(Vector(0,lp->length-1));
+        
+        Vector newPos = lp->position.add(lp->velocity);
+        Vector newPosLast = newPos.add(Vector(0,lp->length-1));
+
+
+        if (newPos.getY() < 0)
+        {
+            newPos.setY(0);
+        }
+        else if (newPosLast.getY() > 31)
+        {
+            newPos.setY(32 - lp->length);
+        }
+        if (lp->velocity.getY() > 0)
+        {
+            display->setPixel(oldPos, false);
+            display->setPixel(newPosLast, true);
+        }
+        if (lp->velocity.getY() < 0)
+        {
+            display->setPixel(oldPosLast, false);
+            display->setPixel(newPos, true);
+        }
+        lp->setPosition(newPos);
     }
 
     // right paddle
-    rp->setPosition(rp->position.add(rp->velocity));
-    if (rp->position.getY() < 0) {
-        rp->position.setY(0);
-    } else if (rp->position.getY() + rp->length > 32)
+    if (!(rp->velocity.equals(Vector(0, 0))))
     {
-        rp->position.setY(32 - rp->length);
+        for (int i = rp->position.getY(); i < rp->position.getY() + rp->length; i++)
+        {
+            display->setPixel(rp->position.getX(), i, false);
+        }
+
+        rp->setPosition(rp->position.add(rp->velocity));
+        if (rp->position.getY() < 0)
+        {
+            rp->position.setY(0);
+        }
+        else if (rp->position.getY() + rp->length > 32)
+        {
+            rp->position.setY(32 - rp->length);
+        }
+
+        for (int i = rp->position.getY(); i < rp->position.getY() + rp->length; i++)
+        {
+            display->setPixel(rp->position.getX(), i, true);
+        }
     }
 
     // ball
-    display->setPixel(ball->position, false);
-
-    ball->setPosition(ball->position.add(ball->velocity));
-    if (ball->position.getY() < 0 || ball->position.getY() > 31) {
-        ball->velocity.setY(ball->velocity.getY()*-1);
-    }
-    if (ball->position.getX() < 0 || ball->position.getX() > 31)
+    if (!(ball->velocity.equals(Vector(0, 0))))
     {
-        ball->velocity.setX(ball->velocity.getX()*-1);
+        display->setPixel(ball->position, false);
+
+        ball->setPosition(ball->position.add(ball->velocity));
+        if (ball->position.getY() < 0 || ball->position.getY() > 31)
+        {
+            ball->velocity.setY(ball->velocity.getY() * -1);
+        }
+        if (ball->position.getX() < 0 || ball->position.getX() > 31)
+        {
+            ball->velocity.setX(ball->velocity.getX() * -1);
+        }
+
+        display->setPixel(ball->position, true);
     }
-
-    display->setPixel(ball->position, true);
-
 }
