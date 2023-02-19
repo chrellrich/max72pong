@@ -11,6 +11,7 @@ public:
     Physics();
     void update(Ball* ball, Paddle* lp, Paddle* rp, Display* display);
 private:
+    void updatePaddle(Paddle* paddle, Display* display);
     
 };
 #endif

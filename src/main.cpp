@@ -7,8 +7,8 @@
 
 long int thisFrameTime = 0;
 long int lastFrameTime = 0;
-int framerate = 10;
-long int FrameDuration = 0;//1000 / framerate;
+int framerate = 30;
+long int FrameDuration = 1000 / framerate;
 int joyStick1 = A0;
 int joyStick2 = A1;
 
