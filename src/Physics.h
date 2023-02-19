@@ -9,7 +9,9 @@ class Physics
 {
 public:
     Physics();
-    void update(Ball* ball, Paddle* lp, Paddle* rp, Display* display);
+    void init(Ball *ball, Paddle *lp, Paddle *rp, Display *display);
+    void update(Ball *ball, Paddle *lp, Paddle *rp, Display *display);
+
 private:
     void updatePaddle(Paddle* paddle, Display* display);
     

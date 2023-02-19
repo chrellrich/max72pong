@@ -29,7 +29,8 @@ void setup()
   rightPaddle = new Paddle();
   rightPaddle->setPosition(Vector(31, 0));
   physics = Physics();
-  ball->setVelocity(Vector(1, 1));
+  // ball->setVelocity(Vector(1, 1));
+  physics.init(ball, leftPaddle, rightPaddle, display);
 }
 
 void loop()
@@ -58,11 +59,11 @@ void loop()
     }
     if (joyValue2 < 400)
     {
-      rightPaddle->velocity.setY(-1);
+      rightPaddle->velocity.setY(1);
     }
     else if (joyValue2 > 600)
     {
-      rightPaddle->velocity.setY(1);
+      rightPaddle->velocity.setY(-1);
     }
     else
     {

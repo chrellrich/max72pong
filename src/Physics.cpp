@@ -4,6 +4,25 @@ Physics::Physics()
 {
 }
 
+void Physics::init(Ball *ball, Paddle *lp, Paddle *rp, Display *display)
+{
+
+    // paddles
+    Vector lpLast = lp->position.add(Vector(0,lp->length-1));
+    Vector rpLast = rp->position.add(Vector(0,lp->length-1));
+    for (int i = lp->position.getY(); i < lpLast.getY(); i++)
+    {
+        display->setPixel(lp->position.getX(), i, true);
+    }
+    for (int i = rp->position.getY(); i < rpLast.getY(); i++)
+    {
+        display->setPixel(rp->position.getX(), i, true);
+    }
+    
+    // ball
+    display->setPixel(ball->position, true);
+}
+
 void Physics::update(Ball *ball, Paddle *lp, Paddle *rp, Display *display)
 {
 
