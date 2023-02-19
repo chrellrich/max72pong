@@ -10,12 +10,12 @@ public:
 	Display();
 	void setPixel(int x, int y, bool state);
 
-    void setPixel(Vector *pixel, bool state);
+    void setPixel(Vector pixel, bool state);
 
+	void resetMatrix();
 
 private:
     void init();
-	void resetMatrix();
     Vector convertToDisplayCoords(Vector coord);
     int convertXToDisplayCoords(int xGame, int yGame);
     int convertYToDisplayCoords(int xGame, int yGame);

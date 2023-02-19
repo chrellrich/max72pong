@@ -5,7 +5,7 @@ Vector::Vector() {
     y = 0;
 }
 
-Vector::Vector(float x, float y) {
+Vector::Vector(int x, int y) {
     this->x = x;
     this->y = y;
 }
@@ -18,11 +18,11 @@ Vector Vector::subtract(Vector b) {
     return Vector(this->x - b.x, this->y - b.y);
 }
 
-Vector Vector::scale(float n) {
+Vector Vector::scale(int n) {
     return Vector(this->x*n, this->y*n);
 }
 
-float Vector::length() {
+int Vector::length() {
     return sqrt((this->x * this->x) + (this->y * this->y));
 }
 
@@ -30,7 +30,7 @@ float Vector::length() {
 //     return this->scale(1/this->length());
 // }
 
-float Vector::dotProduct(Vector b) {
+int Vector::dotProduct(Vector b) {
     return this->x * b.x + this->y * b.y;
 }
 
@@ -42,23 +42,23 @@ bool Vector::operator==(Vector b) {
     return this->equals(b);
 }
 // Getter and Setter
-void Vector::set(float x, float y) {
+void Vector::set(int x, int y) {
     this->x = x;
     this->y = y;
 }
 
-void Vector::setX(float x) {
+void Vector::setX(int x) {
     this->x = x;
 }
 
-void Vector::setY(float y) {
+void Vector::setY(int y) {
     this->y = y;
 }
 
-float Vector::getX() {
+int Vector::getX() {
     return x;
 }
 
-float Vector::getY() {
+int Vector::getY() {
     return y;
 }

@@ -1,14 +1,20 @@
 #ifndef Paddle_h
 #define Paddle_h
 #include "Arduino.h"
+#include <Display.h>
+
 class Paddle
 {
 public:
-	Paddle(int length);
-	void setPosition(int position);
+    Paddle();
+    Paddle(int length);
+    void setPosition(Vector position);
 
-private:
+    void setVelocity(Vector velocity);
+
 	int length;
-    int position;
+    Vector position;
+    Vector velocity;
+private:
 };
 #endif

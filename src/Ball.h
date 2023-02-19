@@ -2,6 +2,8 @@
 #define Ball_h
 #include <Arduino.h>
 #include <Vector.h>
+#include <Display.h>
+
 
 class Ball
 {
@@ -11,8 +13,12 @@ public:
 
     void init();
 
-private:
+    void setPosition(Vector position);
+
+    void setVelocity(Vector velocity);
+
 	Vector position;
     Vector velocity;
+private:
 };
 #endif

@@ -6,23 +6,23 @@ class Vector
 {
 public:
     Vector();
-    Vector(float x, float y);
+    Vector(int x, int y);
     Vector add(Vector vec);
     Vector subtract(Vector b);
-    Vector scale(float n);
-    float length();
+    Vector scale(int n);
+    int length();
     // Vector unitVector();
-    float dotProduct(Vector b);
+    int dotProduct(Vector b);
     bool equals(Vector b);
     bool operator==(Vector b);
-    void set(float x, float y);
-    void setX(float x);
-    void setY(float y);
-    float getX();
-    float getY();
+    void set(int x, int y);
+    void setX(int x);
+    void setY(int y);
+    int getX();
+    int getY();
 
 private:
-    float x;
-    float y;
+    int x;
+    int y;
 };
 #endif
