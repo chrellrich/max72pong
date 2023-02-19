@@ -78,21 +78,24 @@ void Physics::updatePaddle(Paddle *paddle, Display *display)
         {
             newPos.setY(32 - paddle->length);
         }
-        if (paddle->velocity.getY() > 0)
+        if (!oldPos.equals(newPos))
         {
-            display->setPixel(oldPos, false);
-            display->setPixel(newPosLast, true);
+            if (paddle->velocity.getY() > 0)
+            {
+                display->setPixel(oldPos, false);
+                display->setPixel(newPosLast, true);
+            }
+            if (paddle->velocity.getY() < 0)
+            {
+                display->setPixel(oldPosLast, false);
+                display->setPixel(newPos, true);
+            }
+            paddle->setPosition(newPos);
         }
-        if (paddle->velocity.getY() < 0)
-        {
-            display->setPixel(oldPosLast, false);
-            display->setPixel(newPos, true);
-        }
-        paddle->setPosition(newPos);
     }
 
     Vector posLast = paddle->position.add(Vector(0, paddle->length - 1));
-    for (int i = paddle->position.getY(); i < posLast.getY(); i++)
+    for (int i = paddle->position.getY(); i <= posLast.getY(); i++)
     {
         if (display->getPixel(paddle->position.getX(), i) == false)
         {
