@@ -26,27 +26,47 @@ void test_vector_constructor(void)
     TEST_ASSERT_EQUAL(2, a.getY());
 }
 
-void test_vector_math(void)
+void test_equals(void)
+{
+    a = Vector(0, 12);
+    b = Vector(0, 12);
+
+    TEST_ASSERT_TRUE(a == b);
+}
+
+void test_length(void)
 {
     a = Vector(0, 1);
-    TEST_ASSERT_TRUE(a == a);
-
     TEST_ASSERT_EQUAL(1, a.length());
+    a = Vector(0, 2);
+    TEST_ASSERT_EQUAL(2, a.length());
+}
 
-    a = a.scal
-    TEST_ASSERT_EQUAL(2, a.scale(2).length());
+void test_scale(void)
+{
+    a = Vector(1, 1);
+    TEST_ASSERT_TRUE(a.scale(2) == Vector(2, 2));
+}
 
-    TEST_ASSERT_EQUAL(1, a.scale(2).unitVector().length());
+void test_add(void)
+{
+    a = Vector(0, 1);
+    b = Vector(1, 0);
+    TEST_ASSERT_TRUE(Vector(1,1) == a.add(b));
+}
 
-    // b = new Vector(1,0);
-    // TEST_ASSERT_EQUAL(1, a->add(b).getX());
-    // TEST_ASSERT_EQUAL(1, a->add(b)->getY());
+void test_subtract(void)
+{
+    a = Vector(3, 3);
+    b = Vector(2, 2);
+    TEST_ASSERT_TRUE(Vector(1,1) == a.subtract(b));
+}
 
-    // Vector add(Vector vec);
-    // Vector subtract(Vector b);
-    // Vector scale(int n);
-    // Vector unitVector();
-    // int dotProduct(Vector b);
+void test_dotproduct(void)
+{
+    a = Vector(2, 2);
+    b = Vector(5, 10);
+    TEST_ASSERT_EQUAL(30, a.dotProduct(b));    
 }
 
 void setup()
@@ -57,7 +77,13 @@ void setup()
 
     UNITY_BEGIN(); // IMPORTANT LINE!
     RUN_TEST(test_vector_constructor);
-    RUN_TEST(test_vector_math);
+    RUN_TEST(test_equals);
+    RUN_TEST(test_length);
+    RUN_TEST(test_scale);
+    RUN_TEST(test_unit);
+    RUN_TEST(test_add);
+    RUN_TEST(test_subtract);
+    RUN_TEST(test_dotproduct);
 }
 
 void loop()
