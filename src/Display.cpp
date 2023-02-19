@@ -19,35 +19,55 @@ void Display::init()
     resetMatrix();
 }
 
+bool Display::getPixel(int x, int y)
+{
+    Vector displayCoords = convertToDisplayCoords(Vector(x, y));
+    return mx->getPoint(displayCoords.getY(), displayCoords.getX());
+}
+
+bool Display::getPixel(Vector pixel)
+{
+    return this->getPixel(pixel.getX(), pixel.getY());
+}
+
 void Display::setPixel(int x, int y, bool state)
 {
-    mx->control(MD_MAX72XX::UPDATE, MD_MAX72XX::ON);
-    if (x < 0)
+
+    if (x < 0 || x > 31 || y < 0 || y > 31)
     {
-        x = 0;
-    }
-    else if (x > 31)
-    {
-        x = 31;
+        return;
     }
 
-    if (y < 0)
-    {
-        y = 0;
-    }
-    else if (y > 31)
-    {
-        y = 31;
-    }
+    // if (x < 0)
+    // {
+    //     x = 0;
+    // }
+    // else if (x > 31)
+    // {
+    //     x = 31;
+    // }
+
+    // if (y < 0)
+    // {
+    //     y = 0;
+    // }
+    // else if (y > 31)
+    // {
+    //     y = 31;
+    // }
 
     Vector displayCoords = convertToDisplayCoords(Vector(x, y));
     mx->setPoint(displayCoords.getY(), displayCoords.getX(), state);
-    mx->control(MD_MAX72XX::UPDATE, MD_MAX72XX::OFF);
 }
 
 void Display::setPixel(Vector pixel, bool state)
 {
     this->setPixel(pixel.getX(), pixel.getY(), state);
+}
+
+void Display::setUpdate(bool state)
+{
+    mx->control(MD_MAX72XX::UPDATE, (state) ? MD_MAX72XX::ON : MD_MAX72XX::OFF);
 }
 
 void Display::resetMatrix()

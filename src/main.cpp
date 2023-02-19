@@ -23,13 +23,13 @@ void setup()
   Serial.begin(57600);
   display = new Display();
   // ball = Ball(31,31);
-  ball = new Ball(0, 5);
+  ball = new Ball(15, 15);
   leftPaddle = new Paddle();
   leftPaddle->setPosition(Vector(0, 0));
   rightPaddle = new Paddle();
   rightPaddle->setPosition(Vector(31, 0));
   physics = Physics();
-  // ball->setVelocity(Vector(1, 1));
+  ball->setVelocity(Vector(1, 2));
   physics.init(ball, leftPaddle, rightPaddle, display);
 }
 

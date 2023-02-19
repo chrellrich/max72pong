@@ -8,11 +8,15 @@ class Display
 {
 public:
 	Display();
-	void setPixel(int x, int y, bool state);
+    bool getPixel(int x, int y);
+    bool getPixel(Vector pixel);
+    void setPixel(int x, int y, bool state);
 
     void setPixel(Vector pixel, bool state);
 
-	void resetMatrix();
+    void setUpdate(bool state);
+
+    void resetMatrix();
 
 private:
     void init();

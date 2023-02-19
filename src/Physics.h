@@ -12,6 +12,8 @@ public:
     void init(Ball *ball, Paddle *lp, Paddle *rp, Display *display);
     void update(Ball *ball, Paddle *lp, Paddle *rp, Display *display);
 
+    void updateBall(Ball *ball, Display *display);
+
 private:
     void updatePaddle(Paddle* paddle, Display* display);
     
