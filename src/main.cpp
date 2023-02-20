@@ -39,7 +39,7 @@ void loop()
   thisFrameTime = millis();
   if (thisFrameTime >= lastFrameTime + FrameDuration)
   {
-     Serial.println(thisFrameTime - lastFrameTime);
+    // Serial.println(thisFrameTime - lastFrameTime);
     // Executes on every new frame
 
     // read inputs
@@ -72,8 +72,6 @@ void loop()
 
     // calculate game state
     physics.update(ball, leftPaddle, rightPaddle, display);
-
-    // // draw frame
 
     lastFrameTime = thisFrameTime;
   }

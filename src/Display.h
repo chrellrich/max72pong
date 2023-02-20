@@ -20,7 +20,7 @@ public:
 
 private:
     void init();
-    Vector convertToDisplayCoords(Vector coord);
+    Vector convertToDisplayCoords(int x, int y);
     int convertXToDisplayCoords(int xGame, int yGame);
     int convertYToDisplayCoords(int xGame, int yGame);
 };

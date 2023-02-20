@@ -61,6 +61,7 @@ void Physics::updateBall(Ball *ball, Display *display, Paddle *lp, Paddle *rp)
         display->setPixel(ball->position, false);
 
         ball->setPosition(ball->position.add(ball->velocity));
+
         if (ball->position.getX() < 0)
         {
             Vector PaddleStart = lp->position;
@@ -70,10 +71,14 @@ void Physics::updateBall(Ball *ball, Display *display, Paddle *lp, Paddle *rp)
             {
                 // paddle was hit
                 ball->velocity.setX(ball->velocity.getX() * -1);
+                ball->setVelocity(ball->velocity.scale(1.1));
+                if (ball->velocity.length() > 3) {
+                    ball->setVelocity(ball->velocity.scale(1 / ball->velocity.length() * 3));
+                }
             }
             else
             {
-                ball->setVelocity(Vector(1, 2));
+                ball->setVelocity(Vector(1, 0));
                 ball->setPosition(Vector(15, 15));
             }
         }
@@ -86,10 +91,14 @@ void Physics::updateBall(Ball *ball, Display *display, Paddle *lp, Paddle *rp)
             {
                 // paddle was hit
                 ball->velocity.setX(ball->velocity.getX() * -1);
+                ball->setVelocity(ball->velocity.scale(1.1));
+                if (ball->velocity.length() > 3) {
+                    ball->setVelocity(ball->velocity.scale(1 / ball->velocity.length() * 3));
+                }
             }
             else
             {
-                ball->velocity.add(Vector(0,1));
+                ball->setVelocity(Vector(-1, 0));
                 ball->setPosition(Vector(15, 15));
             }
         }

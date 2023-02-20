@@ -21,7 +21,7 @@ void Display::init()
 
 bool Display::getPixel(int x, int y)
 {
-    Vector displayCoords = convertToDisplayCoords(Vector(x, y));
+    Vector displayCoords = convertToDisplayCoords(x, y);
     return mx->getPoint(displayCoords.getY(), displayCoords.getX());
 }
 
@@ -56,7 +56,7 @@ void Display::setPixel(int x, int y, bool state)
     //     y = 31;
     // }
 
-    Vector displayCoords = convertToDisplayCoords(Vector(x, y));
+    Vector displayCoords = convertToDisplayCoords(x, y);
     mx->setPoint(displayCoords.getY(), displayCoords.getX(), state);
 }
 
@@ -77,21 +77,21 @@ void Display::resetMatrix()
     mx->clear();
 }
 
-Vector Display::convertToDisplayCoords(Vector coord)
+Vector Display::convertToDisplayCoords(int x, int y)
 {
     // 32x32 pixel display is connected as 8x128
-    int moduleRow = (coord.getY() - coord.getY() % 8) / 8;
+    int moduleRow = (y - y % 8) / 8;
     int xDisplay = -1;
     int yDisplay = -1;
     if (moduleRow % 2 == 0)
     {
-        xDisplay = 31 - coord.getX() + 32 * moduleRow;
-        yDisplay = coord.getY() % 8;
+        xDisplay = 31 - x + 32 * moduleRow;
+        yDisplay = y % 8;
     }
     else
     {
-        xDisplay = coord.getX() + 32 * moduleRow;
-        yDisplay = 7 - coord.getY() % 8;
+        xDisplay = x + 32 * moduleRow;
+        yDisplay = 7 - y % 8;
     }
 
     return Vector(xDisplay, yDisplay);
