@@ -71,7 +71,13 @@ void loop()
     }
 
     // calculate game state
-    physics.update(ball, leftPaddle, rightPaddle, display);
+    String gameState = physics.update(ball, leftPaddle, rightPaddle, display);
+    if (gameState != "")
+    {  
+      ball->setPosition(Vector(15,15));
+      ball->setVelocity(Vector(1, 2));
+      Serial.println(gameState);
+    }
     lastFrameTime = thisFrameTime;
   }
 }
