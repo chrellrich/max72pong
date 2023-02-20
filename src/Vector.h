@@ -11,7 +11,8 @@ public:
     Vector subtract(Vector b);
     Vector scale(float n);
     float length();
-    // Vector unitVector();
+    Vector rotate(float angle);
+    Vector unitVector();
     float dotProduct(Vector b);
     bool equals(Vector b);
     bool operator==(Vector b);

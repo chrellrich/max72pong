@@ -12,7 +12,7 @@ public:
     void init(Ball *ball, Paddle *lp, Paddle *rp, Display *display);
     void update(Ball *ball, Paddle *lp, Paddle *rp, Display *display);
 
-    void updateBall(Ball *ball, Display *display, Paddle *lp, Paddle *rp);
+    String updateBall(Ball *ball, Display *display, Paddle *lp, Paddle *rp);
 
 private:
     void updatePaddle(Paddle* paddle, Display* display);

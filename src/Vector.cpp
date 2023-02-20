@@ -26,9 +26,20 @@ float Vector::length() {
     return sqrt((this->x * this->x) + (this->y * this->y));
 }
 
-// Vector Vector::unitVector() {
-//     return this->scale(1/this->length());
-// }
+Vector Vector::rotate(float angle) {
+    // x' = x cos θ − y sin θ
+    // y' = x sin θ + y cos θ
+    angle = 2 * PI / 360 * angle;
+
+    float xn = this->x * cos(angle) - this->y * sin(angle);
+    float yn = this->x * sin(angle) + this->y * cos(angle); 
+
+    return Vector(xn, yn);
+}
+
+Vector Vector::unitVector() {
+    return this->scale(1/this->length());
+}
 
 float Vector::dotProduct(Vector b) {
     return this->x * b.x + this->y * b.y;

@@ -72,7 +72,6 @@ void loop()
 
     // calculate game state
     physics.update(ball, leftPaddle, rightPaddle, display);
-
     lastFrameTime = thisFrameTime;
   }
 }

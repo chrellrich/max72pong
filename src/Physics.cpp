@@ -29,7 +29,7 @@ void Physics::update(Ball *ball, Paddle *lp, Paddle *rp, Display *display)
     display->setUpdate(true);
 
     // ball
-    updateBall(ball, display, lp, rp);
+    String gameState = updateBall(ball, display, lp, rp);
 
     // left paddle
     updatePaddle(lp, display);
@@ -40,7 +40,7 @@ void Physics::update(Ball *ball, Paddle *lp, Paddle *rp, Display *display)
     display->setUpdate(false);
 }
 
-void Physics::updateBall(Ball *ball, Display *display, Paddle *lp, Paddle *rp)
+String Physics::updateBall(Ball *ball, Display *display, Paddle *lp, Paddle *rp)
 {
     if (!(ball->velocity.equals(Vector(0, 0))))
     {
@@ -105,7 +105,7 @@ void Physics::updateBall(Ball *ball, Display *display, Paddle *lp, Paddle *rp)
 
         if (ball->position.getY() < 0 || ball->position.getY() > 31)
         {
-            ball->velocity.setY(ball->velocity.getY() * -1);
+             ball->velocity.setY(ball->velocity.getY() * -1);
         }
         display->setPixel(ball->position, true);
     }
