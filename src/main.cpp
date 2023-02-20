@@ -59,11 +59,11 @@ void loop()
     }
     if (joyValue2 < 400)
     {
-      rightPaddle->velocity.setY(1);
+      rightPaddle->velocity.setY(-1);
     }
     else if (joyValue2 > 600)
     {
-      rightPaddle->velocity.setY(-1);
+      rightPaddle->velocity.setY(1);
     }
     else
     {

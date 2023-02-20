@@ -29,7 +29,7 @@ void Physics::update(Ball *ball, Paddle *lp, Paddle *rp, Display *display)
     display->setUpdate(true);
 
     // ball
-    updateBall(ball, display);
+    updateBall(ball, display, lp, rp);
 
     // left paddle
     updatePaddle(lp, display);
@@ -40,22 +40,64 @@ void Physics::update(Ball *ball, Paddle *lp, Paddle *rp, Display *display)
     display->setUpdate(false);
 }
 
-void Physics::updateBall(Ball *ball, Display *display)
+void Physics::updateBall(Ball *ball, Display *display, Paddle *lp, Paddle *rp)
 {
     if (!(ball->velocity.equals(Vector(0, 0))))
     {
+        // display->setPixel(ball->position, false);
+
+        // ball->setPosition(ball->position.add(ball->velocity));
+        // if (ball->position.getY() < 0 || ball->position.getY() > 31)
+        // {
+        //     ball->velocity.setY(ball->velocity.getY() * -1);
+        // }
+        // if (ball->position.getX() < 1 || ball->position.getX() > 31)
+        // {
+        //     ball->velocity.setX(ball->velocity.getX() * -1);
+        // }
+
+        // display->setPixel(ball->position, true);
+
         display->setPixel(ball->position, false);
 
         ball->setPosition(ball->position.add(ball->velocity));
+        if (ball->position.getX() < 0)
+        {
+            Vector PaddleStart = lp->position;
+            Vector PaddleEnd = PaddleStart.add(Vector(0, lp->length - 1));
+
+            if (ball->position.getY() >= PaddleStart.getY() && ball->position.getY() <= PaddleEnd.getY())
+            {
+                // paddle was hit
+                ball->velocity.setX(ball->velocity.getX() * -1);
+            }
+            else
+            {
+                ball->setVelocity(Vector(1, 2));
+                ball->setPosition(Vector(15, 15));
+            }
+        }
+        else if (ball->position.getX() > 31)
+        {
+            Vector PaddleStart = rp->position;
+            Vector PaddleEnd = PaddleStart.add(Vector(0, rp->length - 1));
+
+            if (ball->position.getY() >= PaddleStart.getY() && ball->position.getY() <= PaddleEnd.getY())
+            {
+                // paddle was hit
+                ball->velocity.setX(ball->velocity.getX() * -1);
+            }
+            else
+            {
+                ball->velocity.add(Vector(0,1));
+                ball->setPosition(Vector(15, 15));
+            }
+        }
+
         if (ball->position.getY() < 0 || ball->position.getY() > 31)
         {
             ball->velocity.setY(ball->velocity.getY() * -1);
         }
-        if (ball->position.getX() < 1 || ball->position.getX() > 31)
-        {
-            ball->velocity.setX(ball->velocity.getX() * -1);
-        }
-
         display->setPixel(ball->position, true);
     }
 }
