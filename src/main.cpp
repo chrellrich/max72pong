@@ -22,30 +22,8 @@ Physics physics;
 int scoreLeft = 0;
 int scoreRight = 0;
 
-void test()
-{
-  bool zero[5][3] = {
-      {1, 1, 1},
-      {1, 0, 1},
-      {1, 0, 1},
-      {1, 0, 1},
-      {1, 1, 1}};
-  // display->setUpdate(true);
-  for (int i = 0; i < 5; i++)
-  {
-    Serial.print("i = ");
-    Serial.print(i);
-    for (int j = 0; i < 3; i++)
-    {
-      Serial.print(" j(");
-      Serial.print(j);
-      Serial.print(") ");
-      Serial.print((zero[i][j]));
-    }
-    Serial.println();
-  }
-  // display->setUpdate(false);
-}
+int state = 0;
+
 void setup()
 {
   Serial.begin(57600);
@@ -58,20 +36,24 @@ void setup()
   physics = Physics();
   ball->setVelocity(Vector(1, 2));
   physics.init(ball, leftPaddle, rightPaddle, display);
-  test();
 }
 
-void drawByteArray(byte zeichen[], int position)
+void drawByteArray(bool zeichen[5][3], int position)
 {
   display->setUpdate(true);
   for (int i = 0; i < 5; i++)
   {
-    for (int j = 0; i < 3; i++)
+    // Serial.print("i = ");
+    // Serial.print(i);
+    for (int j = 0; j < 3; j++)
     {
-      display->setPixel(position + j, 1 + i, (zeichen[i] & bit(j)));
-      Serial.print((zeichen[i] & bit(j)));
+      // Serial.print(" j(");
+      // Serial.print(j);
+      // Serial.print(") ");
+      // Serial.print((zero[i][j]));
+      display->setPixel(position + j, 1 + i, zeichen[i][j]);
     }
-    Serial.println();
+    // Serial.println();
   }
   display->setUpdate(false);
 }
@@ -119,33 +101,41 @@ void drawNumber(int score, int position)
 
 void drawScore()
 {
-  drawNumber(scoreLeft, 7);
+  drawNumber(scoreLeft, 8);
   drawNumber(scoreRight, 21);
 }
 
 void resetField()
 {
-  ball->setPosition(Vector(15, 15));
+  if (scoreLeft == 10)
+  {
+    state = 1;
+    scoreLeft = 0;
+  }
+  else if (scoreRight == 10)
+  {
+    state = 1;
+    scoreRight = 0;
+  }
   int startDir = 0;
   if (scoreLeft > scoreRight)
   {
-    startDir = 1;
+    startDir = -1;
   }
   else if (scoreLeft < scoreRight)
   {
-    startDir = -1;
+    startDir = 1;
   }
   else
   {
-    startDir = random(-1, 1);
+    startDir = (rand() % 2 == 0) ? 1 : -1;
   }
-
-  ball->setVelocity(Vector(startDir, 0));
-  leftPaddle->setPosition(Vector(0, 0));
-  rightPaddle->setPosition(Vector(0, 31));
+  ball->setPosition(Vector(15, 15));
+  ball->setVelocity(Vector(0.5 * startDir, 0));
   leftPaddle->setVelocity(Vector(0, 0));
   rightPaddle->setVelocity(Vector(0, 0));
-  display->resetMatrix();
+  // display->resetMatrix();
+  display->setPixel(ball->position, false);
   drawScore();
 }
 
@@ -187,24 +177,33 @@ void loop()
   {
     // Serial.println(thisFrameTime - lastFrameTime);
     // Executes on every new frame
+    switch (state)
+    {
+    case 0:
+      // game in progress
+      // read inputs
+      readInputs();
 
-    // read inputs
-    // readInputs();
-
-    // calculate game state
-    // String gameState = physics.update(ball, leftPaddle, rightPaddle, display);
-    // if (gameState == "leftHit")
-    // {
-    //   scoreRight += 1,
-    //       resetField();
-    //   Serial.println("right scored");
-    // }
-    // else if (gameState == "rightHit")
-    // {
-    //   scoreLeft += 1,
-    //       resetField();
-    //   Serial.println("left scored");
-    // }
+      // calculate game state
+      String gameState = physics.update(ball, leftPaddle, rightPaddle, display);
+      if (gameState == "leftHit")
+      {
+        scoreRight += 1,
+            resetField();
+        Serial.println("right scored");
+      }
+      else if (gameState == "rightHit")
+      {
+        scoreLeft += 1,
+            resetField();
+        Serial.println("left scored");
+      }
+      break;
+    case 1:
+      break;
+    default:
+      break;
+    }
 
     lastFrameTime = thisFrameTime;
   }
