@@ -24,12 +24,12 @@ void Physics::init(Ball *ball, Paddle *lp, Paddle *rp, Display *display)
     display->setUpdate(false);
 }
 
-void Physics::update(Ball *ball, Paddle *lp, Paddle *rp, Display *display)
+String Physics::update(Ball *ball, Paddle *lp, Paddle *rp, Display *display)
 {
     display->setUpdate(true);
 
     // ball
-    updateBall(ball, display, lp, rp);
+    String gameState = updateBall(ball, display, lp, rp);
 
     // left paddle
     updatePaddle(lp, display);
@@ -38,29 +38,19 @@ void Physics::update(Ball *ball, Paddle *lp, Paddle *rp, Display *display)
     updatePaddle(rp, display);
 
     display->setUpdate(false);
+    return gameState;
 }
 
-void Physics::updateBall(Ball *ball, Display *display, Paddle *lp, Paddle *rp)
+String Physics::updateBall(Ball *ball, Display *display, Paddle *lp, Paddle *rp)
 {
+    String gameState = "";
     if (!(ball->velocity.equals(Vector(0, 0))))
     {
-        // display->setPixel(ball->position, false);
-
-        // ball->setPosition(ball->position.add(ball->velocity));
-        // if (ball->position.getY() < 0 || ball->position.getY() > 31)
-        // {
-        //     ball->velocity.setY(ball->velocity.getY() * -1);
-        // }
-        // if (ball->position.getX() < 1 || ball->position.getX() > 31)
-        // {
-        //     ball->velocity.setX(ball->velocity.getX() * -1);
-        // }
-
-        // display->setPixel(ball->position, true);
 
         display->setPixel(ball->position, false);
 
         ball->setPosition(ball->position.add(ball->velocity));
+
         if (ball->position.getX() < 0)
         {
             Vector PaddleStart = lp->position;
@@ -70,11 +60,17 @@ void Physics::updateBall(Ball *ball, Display *display, Paddle *lp, Paddle *rp)
             {
                 // paddle was hit
                 ball->velocity.setX(ball->velocity.getX() * -1);
+                ball->setVelocity(ball->velocity.scale(1.1));
+                if (ball->velocity.length() > 3)
+                {
+                    ball->setVelocity(ball->velocity.scale(1 / ball->velocity.length() * 3));
+                }
             }
             else
             {
-                ball->setVelocity(Vector(1, 2));
+                ball->setVelocity(Vector(0, 0));
                 ball->setPosition(Vector(15, 15));
+                gameState = "leftHit";
             }
         }
         else if (ball->position.getX() > 31)
@@ -86,11 +82,17 @@ void Physics::updateBall(Ball *ball, Display *display, Paddle *lp, Paddle *rp)
             {
                 // paddle was hit
                 ball->velocity.setX(ball->velocity.getX() * -1);
+                ball->setVelocity(ball->velocity.scale(1.1));
+                if (ball->velocity.length() > 3)
+                {
+                    ball->setVelocity(ball->velocity.scale(1 / ball->velocity.length() * 3));
+                }
             }
             else
             {
-                ball->velocity.add(Vector(0,1));
+                ball->setVelocity(Vector(0, 0));
                 ball->setPosition(Vector(15, 15));
+                gameState = "rightHit";
             }
         }
 
@@ -100,6 +102,7 @@ void Physics::updateBall(Ball *ball, Display *display, Paddle *lp, Paddle *rp)
         }
         display->setPixel(ball->position, true);
     }
+    return gameState;
 }
 
 void Physics::updatePaddle(Paddle *paddle, Display *display)
