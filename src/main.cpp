@@ -10,8 +10,8 @@ long int thisFrameTime = 0;
 long int lastFrameTime = 0;
 int framerate = 30;
 long int FrameDuration = 1000 / framerate;
-int joyStick1 = A0;
-int joyStick2 = A1;
+int joyStick1 = A1;
+int joyStick2 = A0;
 
 Display *display;
 Ball *ball;
