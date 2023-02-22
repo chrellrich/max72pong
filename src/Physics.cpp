@@ -66,18 +66,13 @@ String Physics::updateBall(Ball *ball, Display *display, Paddle *lp, Paddle *rp)
                 if (ball->position.getY() <= PaddleStart.getY() + 2)
                 {
                     // upper 2 pixels were hit
-                    ball->setVelocity(ball->velocity.rotate(10));
-                    // if (ball->velocity.getY() > 0) {
-                    //     // ball was going downwards
-                    // } else if (ball->velocity.getY() < 0) {
-                    //     // ball was going upwards
-                    //     ball->setVelocity(ball->velocity.rotate(10));
-                    // }
+                    ball->setVelocity(ball->velocity.rotate(-10));
+                    
                 }
                 else if (ball->position.getY() >= PaddleEnd.getY() - 2)
                 {
                     // lower 2 pixels were hit
-                    ball->setVelocity(ball->velocity.rotate(-10));
+                    ball->setVelocity(ball->velocity.rotate(10));
                 }
 
                 // increase ball speed by 10 percent
