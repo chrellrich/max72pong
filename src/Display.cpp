@@ -72,7 +72,7 @@ void Display::setUpdate(bool state)
 
 void Display::resetMatrix()
 {
-    mx->control(MD_MAX72XX::INTENSITY, MAX_INTENSITY / 10);
+    mx->control(MD_MAX72XX::INTENSITY, MAX_INTENSITY / 4);
     mx->control(MD_MAX72XX::UPDATE, MD_MAX72XX::ON);
     mx->clear();
 }

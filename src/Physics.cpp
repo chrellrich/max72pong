@@ -46,8 +46,10 @@ String Physics::updateBall(Ball *ball, Display *display, Paddle *lp, Paddle *rp)
     String gameState = "";
     if (!(ball->velocity.equals(Vector(0, 0))))
     {
-
-        display->setPixel(ball->position, false);
+        if (!((ball->position.getX() >= 8 && ball->position.getX() <= 10 && ball->position.getY() >= 1 && ball->position.getY() <= 5) || (ball->position.getX() >= 21 && ball->position.getX() <= 24 && ball->position.getY() >= 1 && ball->position.getY() <= 5)))
+        {
+            display->setPixel(ball->position, false);
+        }
 
         ball->setPosition(ball->position.add(ball->velocity));
 
@@ -60,7 +62,23 @@ String Physics::updateBall(Ball *ball, Display *display, Paddle *lp, Paddle *rp)
             {
                 // paddle was hit
                 ball->velocity.setX(ball->velocity.getX() * -1);
+
+                if (ball->position.getY() <= PaddleStart.getY() + 2)
+                {
+                    // upper 2 pixels were hit
+                    ball->setVelocity(ball->velocity.rotate(-10));
+                    
+                }
+                else if (ball->position.getY() >= PaddleEnd.getY() - 2)
+                {
+                    // lower 2 pixels were hit
+                    ball->setVelocity(ball->velocity.rotate(10));
+                }
+
+                // increase ball speed by 10 percent
                 ball->setVelocity(ball->velocity.scale(1.1));
+
+                // cap ball speed at 3
                 if (ball->velocity.length() > 3)
                 {
                     ball->setVelocity(ball->velocity.scale(1 / ball->velocity.length() * 3));
@@ -82,6 +100,18 @@ String Physics::updateBall(Ball *ball, Display *display, Paddle *lp, Paddle *rp)
             {
                 // paddle was hit
                 ball->velocity.setX(ball->velocity.getX() * -1);
+
+                if (ball->position.getY() <= PaddleStart.getY() + 2)
+                {
+                    // upper 2 pixels were hit
+                    ball->setVelocity(ball->velocity.rotate(10));
+                }
+                else if (ball->position.getY() >= PaddleEnd.getY() - 2)
+                {
+                    // lower 2 pixels were hit
+                    ball->setVelocity(ball->velocity.rotate(-10));
+                }
+
                 ball->setVelocity(ball->velocity.scale(1.1));
                 if (ball->velocity.length() > 3)
                 {
@@ -100,7 +130,11 @@ String Physics::updateBall(Ball *ball, Display *display, Paddle *lp, Paddle *rp)
         {
             ball->velocity.setY(ball->velocity.getY() * -1);
         }
-        display->setPixel(ball->position, true);
+        // only draw ball if not in score area
+        if (!((ball->position.getX() >= 8 && ball->position.getX() <= 10 && ball->position.getY() >= 1 && ball->position.getY() <= 5) || (ball->position.getX() >= 21 && ball->position.getX() <= 24 && ball->position.getY() >= 1 && ball->position.getY() <= 5)))
+        {
+            display->setPixel(ball->position, true);
+        }
     }
     return gameState;
 }
