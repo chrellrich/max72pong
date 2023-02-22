@@ -22,23 +22,12 @@ Physics physics;
 int scoreLeft = 0;
 int scoreRight = 0;
 
-int state = 0;
+int state = 1;
 
-void setup()
-{
-  Serial.begin(57600);
-  display = new Display();
-  ball = new Ball(15, 15);
-  leftPaddle = new Paddle();
-  leftPaddle->setPosition(Vector(0, 0));
-  rightPaddle = new Paddle();
-  rightPaddle->setPosition(Vector(31, 0));
-  physics = Physics();
-  ball->setVelocity(Vector(1, 2));
-  physics.init(ball, leftPaddle, rightPaddle, display);
-}
+bool leftReady;
+bool rightReady;
 
-void drawByteArray(bool zeichen[5][3], int position)
+void drawBoolArray(bool zeichen[5][3], int x, int y)
 {
   display->setUpdate(true);
   for (int i = 0; i < 5; i++)
@@ -51,47 +40,47 @@ void drawByteArray(bool zeichen[5][3], int position)
       // Serial.print(j);
       // Serial.print(") ");
       // Serial.print((zero[i][j]));
-      display->setPixel(position + j, 1 + i, zeichen[i][j]);
+      display->setPixel(x + j, y + i, zeichen[i][j]);
     }
     // Serial.println();
   }
   display->setUpdate(false);
 }
 
-void drawNumber(int score, int position)
+void drawNumber(int score, int x, int y)
 {
 
   switch (score)
   {
   case 0:
-    drawByteArray(zero, position);
+    drawBoolArray(zero, x, y);
     break;
   case 1:
-    drawByteArray(one, position);
+    drawBoolArray(one, x, y);
     break;
   case 2:
-    drawByteArray(two, position);
+    drawBoolArray(two, x, y);
     break;
   case 3:
-    drawByteArray(three, position);
+    drawBoolArray(three, x, y);
     break;
   case 4:
-    drawByteArray(four, position);
+    drawBoolArray(four, x, y);
     break;
   case 5:
-    drawByteArray(five, position);
+    drawBoolArray(five, x, y);
     break;
   case 6:
-    drawByteArray(six, position);
+    drawBoolArray(six, x, y);
     break;
   case 7:
-    drawByteArray(seven, position);
+    drawBoolArray(seven, x, y);
     break;
   case 8:
-    drawByteArray(eight, position);
+    drawBoolArray(eight, x, y);
     break;
   case 9:
-    drawByteArray(nine, position);
+    drawBoolArray(nine, x, y);
     break;
 
   default:
@@ -101,8 +90,8 @@ void drawNumber(int score, int position)
 
 void drawScore()
 {
-  drawNumber(scoreLeft, 8);
-  drawNumber(scoreRight, 21);
+  drawNumber(scoreLeft, 8, 1);
+  drawNumber(scoreRight, 21, 1);
 }
 
 void resetField()
@@ -110,12 +99,10 @@ void resetField()
   if (scoreLeft == 10)
   {
     state = 1;
-    scoreLeft = 0;
   }
   else if (scoreRight == 10)
   {
     state = 1;
-    scoreRight = 0;
   }
   int startDir = 0;
   if (scoreLeft > scoreRight)
@@ -137,6 +124,7 @@ void resetField()
   // display->resetMatrix();
   display->setPixel(ball->position, false);
   drawScore();
+  delay(200);
 }
 
 void readInputs()
@@ -169,6 +157,20 @@ void readInputs()
   }
 }
 
+void setup()
+{
+  Serial.begin(57600);
+  display = new Display();
+  ball = new Ball(15, 15);
+  leftPaddle = new Paddle();
+  leftPaddle->setPosition(Vector(0, 0));
+  rightPaddle = new Paddle();
+  rightPaddle->setPosition(Vector(31, 0));
+  physics = Physics();
+  physics.init(ball, leftPaddle, rightPaddle, display);
+  resetField();
+}
+
 void loop()
 {
   // Controll execution speed so the target framerate is reached
@@ -177,9 +179,8 @@ void loop()
   {
     // Serial.println(thisFrameTime - lastFrameTime);
     // Executes on every new frame
-    switch (state)
+    if (state == 0)
     {
-    case 0:
       // game in progress
       // read inputs
       readInputs();
@@ -188,21 +189,55 @@ void loop()
       String gameState = physics.update(ball, leftPaddle, rightPaddle, display);
       if (gameState == "leftHit")
       {
-        scoreRight += 1,
-            resetField();
+        scoreRight += 1;
+        resetField();
         Serial.println("right scored");
       }
       else if (gameState == "rightHit")
       {
-        scoreLeft += 1,
-            resetField();
+        scoreLeft += 1;
+        resetField();
         Serial.println("left scored");
       }
-      break;
-    case 1:
-      break;
-    default:
-      break;
+    }
+    else if (state == 1)
+    {
+      // ready for next game
+      int joyValue1 = analogRead(joyStick1);
+      int joyValue2 = analogRead(joyStick2);
+
+      if (joyValue1 > 700 && !leftReady)
+      {
+        leftReady = true;
+        drawBoolArray(ready, 8, 16);
+      }
+      if (leftReady == NULL)
+      {
+        drawBoolArray(arrowDown, 8, 16);
+        leftReady = false;
+      }
+      if (joyValue2 > 700 && !rightReady)
+      {
+        rightReady = true;
+        drawBoolArray(ready, 21, 16);
+      }
+      if (rightReady == NULL)
+      {
+        drawBoolArray(arrowDown, 21, 16);
+        rightReady = false;
+      }
+      if (leftReady && rightReady)
+      {
+        resetField();
+        scoreLeft = 0;
+        scoreRight = 0;
+        leftReady = NULL;
+        rightReady = NULL;
+        delay(200);
+        display->resetMatrix();
+        state = 0;
+        resetField();
+      }
     }
 
     lastFrameTime = thisFrameTime;

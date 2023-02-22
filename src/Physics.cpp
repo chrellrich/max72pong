@@ -60,6 +60,7 @@ String Physics::updateBall(Ball *ball, Display *display, Paddle *lp, Paddle *rp)
             {
                 // paddle was hit
                 ball->velocity.setX(ball->velocity.getX() * -1);
+                // ball->setVelocity(ball->velocity.rotate(170));
                 ball->setVelocity(ball->velocity.scale(1.1));
                 if (ball->velocity.length() > 3)
                 {
