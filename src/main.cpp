@@ -124,7 +124,7 @@ void resetField()
   // display->resetMatrix();
   display->setPixel(ball->position, false);
   drawScore();
-  delay(200);
+  delay(500);
 }
 
 void readInputs()
@@ -133,6 +133,7 @@ void readInputs()
   int joyValue2 = analogRead(joyStick2);
   if (joyValue1 < 400)
   {
+    
     leftPaddle->velocity.setY(-1);
   }
   else if (joyValue1 > 600)
