@@ -96,14 +96,15 @@ void drawScore()
 
 void resetField()
 {
-  if (scoreLeft == 10)
+  if (scoreLeft == 6)
   {
     state = 1;
   }
-  else if (scoreRight == 10)
+  else if (scoreRight == 6)
   {
     state = 1;
   }
+  drawScore();
   int startDir = 0;
   if (scoreLeft > scoreRight)
   {
